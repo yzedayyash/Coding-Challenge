@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Traits\HelperTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -35,6 +36,12 @@ class OrderController extends Controller
             OrderProduct::insert($order_products);
             foreach ($data as $ingredient_id => $quantity) {
                 $ingredient = Ingredient::whereId($ingredient_id)->first();
+                if($ingredient->stock - $quantity < 0){
+
+                    throw ValidationException::withMessages([
+                        'error' => "$ingredient->name  is out of quantity"
+                    ]);
+                }
                 $ingredient->stock -= $quantity;
                 $ingredient->save();
             }
