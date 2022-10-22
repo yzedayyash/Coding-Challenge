@@ -8,6 +8,10 @@ DB_DATABASE=test
 DB_USERNAME=root
 DB_PASSWORD=
 ```
+
+add your email smtp details or set the MAIL_MAILER as log
+
+
 run 
 ```
  composer install
